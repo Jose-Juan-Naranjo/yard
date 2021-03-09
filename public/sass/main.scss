@@ -1,0 +1,108 @@
+@import "mixin";
+@import "invoice";
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+html {
+  font-size: 10px;
+
+  body {
+    background-color: lightgray;
+  }
+}
+
+body {
+  position: relative;
+  height: 100vh;
+
+  .ticket {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 700px;
+    height: max-content;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 2px solid black;
+    @include respond(phone) {
+      width: 400px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-evenly;
+      padding: 10px;
+      .invoice {
+        display: inline;
+        font-size: 2rem;
+      }
+      h1 {
+        display: inline;
+      }
+      .invoicenumber p {
+        display: inline;
+      }
+    }
+    .form {
+      .customer-info-box {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+
+        .insert {
+          padding: 2px;
+          height: 40px;
+          border: 0.5px solid black;
+
+          h3 {
+            font-size: 1.8rem;
+            width: max-content;
+            margin: 0 auto;
+          }
+        }
+      }
+      .items-info {
+        width: 100%;
+        margin-top: 10px;
+        border-top: 1px solid black;
+        display: grid;
+        grid-template-columns: 10% 10% 50% 10% 10% 10%;
+        grid-template-rows: 1fr;
+
+        .description {
+          display: flex;
+          justify-content: center;
+          padding: 3px;
+          border: 1px solid black;
+        }
+
+        .items_container {
+          grid-column: 1 / -1;
+          grid-row-start: 4 / -1;
+          display: grid;
+          grid-template-columns: 100%;
+          grid-template-rows: max-content;
+
+          justify-content: center;
+          border: 1px solid black;
+          min-height: 20px;
+          font-size: 1.5rem;
+
+          .item {
+            display: grid;
+            grid-template-columns: 10% 10% 50% 10% 10% 10%;
+            grid-template-rows: 1fr;
+
+            .box {
+              border: 1px solid black;
+              font-size: 1rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+html
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='widht=device-width, initial-scale=1.0')
+    link(rel='stylesheet' href='css/login.css')
+    title Penick Yard
+
+  body
+    header.header
+      form.form
+        h2 Login 
+        hr
+        br
+        .email
+          label Email
+          input#email(type='email' name='email')
+        .password
+          label Password
+          input#password(type='password' name='password')
+        button.login-btn(type='submit') Login
+
+      a#enterBtn.display-none(href='api/v1/homepage')
+        h2 Enter
+
+    script(src='/js/login.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js')
+    

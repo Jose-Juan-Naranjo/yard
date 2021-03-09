@@ -1,0 +1,143 @@
+dOCTYPE(html)
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet' href='/../css/invoice.css')
+    title New Invoice
+
+body
+  form.invoice_form(action='./invoices' method='post')
+    .invoice_heading
+      h2 Invoice
+      h1 Group 5 Yard Supply
+      
+    .inputs
+      label(for="jobandphase") Job & Phase Number
+        input(type='text' maxlength='25' name='jobandphase')
+      
+      label(for='shipto') Ship To 
+        input(type='text' maxlength='35' name='shipto')
+      
+      label(for='creditaccountnumber') Credit Account Number
+        input(type='text' maxlength='25' name='creditaccountnumber')    
+      
+      label(for='address') Address
+        input(type='text' maxlength='40' name='address')
+      
+      label(for='totalcostinvoice') Total Cost Invoice
+        input(type='text' maxlength='25' name='totalcostinvoice')
+      
+      div.csz-date-box
+        label.csz(for='citystatezip') City, State, Zip
+          input(type='text' maxlength='29' name='citystatezip')
+        
+        label.date(for='date') DATE
+          input(type='date' name='date')
+        
+    section.invoice-items#itemContainer
+      div.box.ordered 
+        P.head-text Ordered
+      .box.shipped 
+        p.head-text Shipped
+      .box.description-input 
+        p.head-text Description
+      .box.price 
+        p.head-text Price
+      .box.unit 
+        p.head-text Unit
+      .box.amount 
+        p.head-text Amount
+        
+      .box.ordered
+        input(type='text' name="item[0][ordered]")
+      
+      .box.shipped
+        input(type='text' name="item[0][shipped]")
+      
+      .box.description-input
+        input(type='text' name="item[0][descriptionInput]")
+      
+      .box.price
+        input(type='text' name="item[0][price]")
+      
+      .box.unit
+        input(type='text' name="item[0][unit]")
+      
+      .box.amount
+        input(type='text' name="item[0][amount]")
+        
+    .btn-bar#btnBar
+        button.add-btn#addItemBtn(type='button') Add Item
+        button.delete-btn#deleteItemBtn(type='button') Delete Item
+        hr
+        button.input-btn#saveBtn(type='submit') Save Invoice
+        button.delete-btn(type='button' style='margin-left:5px;background:red;')
+          a(href='/api/v1/homepage' style='color: white;margin-left:5px;') Back Home
+        
+script(type="text/javascript").
+
+        document.getElementById('saveBtn').addEventListener('click', function() {
+          alert('Invoice Saved! Press Enter or click OK');
+          
+        });
+
+        const itemValues = ["ordered","shipped","descriptionInput","price","unit","amount"];
+
+        const itemClass = ["ordered","shipped","description-input","price","unit","amount"];
+
+        let itemCount = 1;
+        
+        document.getElementById('addItemBtn').addEventListener('click', function(){
+            
+            var i;
+            for (i = 0; i < itemValues.length; i++) {
+            var input = document.createElement("input");
+                input.name = "item[" + itemCount + "][" + itemValues[i] + "]";
+                input.type = "text";
+                
+            var div = document.createElement("div");
+            div.className = "box" + " " + itemClass[i];
+
+            div.appendChild(input);
+            document.getElementById("itemContainer").appendChild(div);
+            };
+            itemCount++;
+
+            if (itemContainer.childNodes.length === 12) {
+
+              const deleteBtn = document.getElementById("deleteItemBtn");
+              
+              deleteBtn.style.visibility = 'visible';
+            } 
+
+            if (itemContainer.childNodes.length > 120) {
+              const addBtn = document.getElementById('addItemBtn');
+
+              addBtn.style.visibility = 'hidden';
+            } 
+        });
+
+        let deleteItems = 6;
+
+        document.getElementById("deleteItemBtn").addEventListener('click', function() {
+            var i;
+            for (i = 0; i < deleteItems; i++) {
+              const itemContainer = document.getElementById("itemContainer");
+              
+              itemContainer.removeChild(itemContainer.lastChild);
+            }
+            if (itemContainer.childNodes.length === 6) {
+
+              const deleteBtn = document.getElementById("deleteItemBtn");
+              
+              deleteBtn.style.visibility = 'hidden';
+            } 
+
+            if (itemContainer.childNodes.length === 120) {
+              const addBtn = document.getElementById('addItemBtn');
+
+              addBtn.style.visibility = 'visible';
+            } 
+        });
+        

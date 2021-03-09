@@ -1,0 +1,38 @@
+doctype html
+html
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+
+    link(rel='stylesheet' href='/../css/saved-invoices.css')
+    title Invoice Archive
+      
+  body#head
+    header.header
+      h1.big-font INVOICE ARCHIVE 
+      //- h3= `Hello ${users[0].name}`
+      .link
+        a(href="/api/v1/homepage") HOMEPAGE
+        a(href="/api/v1/invoices") CREATE ANOTHER INVOICE
+    hr
+    
+    Section.container
+
+      - let idCount = 10 * 10000 / 1;
+      each invoice in invoices
+        .box
+          span= invoice.date.toLocaleString('en-us',{month:'long', day:'numeric', year:'numeric'})
+          br
+          hr
+          span.name= invoice.shipto
+          br
+          .a-box
+            a.anchor(href=`${invoice._id}`) view
+            p #{idCount}
+        -idCount++;
+           
+
+
+   
+  
+  

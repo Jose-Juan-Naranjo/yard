@@ -1,0 +1,96 @@
+dOCTYPE(html)
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet' href='/../css/invoice.css')
+    title=invoice.shipto + invoice.date.toDateString('en,US')
+    
+body
+  form.invoice_form
+    .invoice_heading
+      h2 Invoice
+      h1 Group 5 Yard Supply
+      h4.id-style= 'ID: ' + invoice.id
+      
+    .inputs
+      label(for="jobandphase") Job & Phase Number
+        input(type='text' name='jobandphase' placeholder=invoice.jobandphase)
+      
+      label(for='shipto') Ship To 
+        input(type='text' name='shipto' placeholder=invoice.shipto)
+      
+      label(for='creditaccountnumber') Credit Account Number
+        input(type='text' name='creditaccountnumber' placeholder=invoice.creditaccountnumber)    
+      
+      label(for='address') Address
+        input(type='text' name='address' placeholder=invoice.address)
+      
+      label(for='totalcostinvoice') Total Cost Invoice
+        input(type='text' name='totalcostinvoice' placeholder=invoice.totalcostinvoice)
+      
+      div.csz-date-box
+        label.csz(for='citystatezip') City, State, Zip
+          input(type='text' name='citystatezip' placeholder=invoice.citystatezip)
+        
+        label.date(for='date') DATE
+          input(type='text' name='date' placeholder=invoice.date.toDateString('en-US'))
+        
+    section.invoice-items#itemContainer
+      div.box.ordered Ordered
+      .box.shipped Shipped
+      .box.description-input Description
+      .box.price Price
+      .box.unit Unit
+      .box.amount Amount
+
+      - let num = -1;
+      each item in invoice.item 
+        - num++;
+        - const val = ["[ordered]","[shipped]","descriptionInput","price","unit","amount"];
+        - let itemNum = 'item['+num+']';
+        .box.ordered
+          input(type='text' name=itemNum+val[0] placeholder=item.ordered)
+        
+        .box.shipped
+          input(type='text' name=itemNum+val[1] placeholder=item.shipped)
+        
+        .box.description-input
+          input(type='text' name=itemNum+val[2] placeholder=item.descriptionInput)
+        
+        .box.price
+          input(type='text' name=itemNum+val[3] placeholder=item.price)
+        
+        .box.unit
+          input(type='text' name=itemNum+val[4] placeholder=item.unit)
+        
+        .box.amount
+          input(type='text' name=itemNum+val[5] placeholder=item.amount)
+    footer.footer
+      a.noprint(href="saved-invoices" style='font-size: 1.5em;background-color:darkgrey;border:1px solid black;color:white;padding: 3px;border-radius:3px;') BACK
+
+      //- button#patch.update-btn(type="submit" style='font-size: 1.5em;background-color: yellow;color:darkgreen;border:1px solid black;padding: 3px;border-radius:3px;') UPDATE INVOICE!
+
+      button#delete.update-btn.noprint(type="button" style='font-size: 1.5em;background-color: red;color:white;border:1px solid black;padding: 3px;border-radius:3px;') DELETE INVOICE!
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.js" integrity="sha512-otOZr2EcknK9a5aa3BbMR9XOjYKtxxscwyRHN6zmdXuRfJ5uApkHB7cz1laWk2g8RKLzV9qv/fl3RPwfCuoxHQ==" crossorigin="anonymous"></script>
+  
+  script(type='text/javascript').
+
+    function deleteInvoice() {
+      axios
+        .delete(`http://144.126.220.44:80/api/v1/invoices/#{invoice.id}`)
+        .then(alert('Invoice deleted'))
+        .then(window.location.href = 'http://144.126.220.44:80/api/v1/invoices/saved-invoices')
+        .catch(err => console.error(err));
+      }
+      
+        document.getElementById('delete').addEventListener('click', deleteInvoice);
+
+    function patchInvoice() {
+      axios
+        .patch(`http://144.126.220.44:80/api/v1/invoices/update/#{invoice.id}`)
+        .then(alert('Patched'))
+        .catch(err => console.error(err));
+      }
+        document.getElementById('patch').addEventListener('click', patchInvoice);
